@@ -25,3 +25,12 @@ migrate:
 
 test:
 	$(COMPOSE) exec php bash -lc "vendor/bin/phpunit --colors=always"
+
+csfixer:
+	docker-compose exec php vendor/bin/php-cs-fixer check $(filter-out $@,$(MAKECMDGOALS))
+
+phpstan:
+	docker-compose exec php vendor/bin/phpstan $(filter-out $@,$(MAKECMDGOALS))
+
+psalm:
+	docker-compose exec php vendor/bin/psalm $(filter-out $@,$(MAKECMDGOALS))
