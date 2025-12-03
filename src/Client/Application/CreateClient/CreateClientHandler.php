@@ -16,7 +16,6 @@ class CreateClientHandler
     public function __invoke(CreateClientCommand $command): Client
     {
         $client = new Client(
-            $command->name,
             $command->email,
             $command->password,
             $command->country,
@@ -24,7 +23,9 @@ class CreateClientHandler
             $command->address,
             $command->zipCode,
             $command->phoneNumber,
-            ClientType::personal()
+            $command->clientType,
+            $command->personalData,
+            $command->businessData,
         );
 
         $this->clientRepository->save($client);

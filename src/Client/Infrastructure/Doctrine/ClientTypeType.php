@@ -1,7 +1,5 @@
 <?php
 
-// src/Client/Infrastructure/Doctrine/ClientTypeType.php
-
 namespace App\Client\Infrastructure\Doctrine;
 
 use App\Client\Domain\ClientType;

@@ -7,7 +7,6 @@ class Client
     private ?int $id = null;
 
     public function __construct(
-        private string $name,
         private string $email,
         private string $password,
         private string $country,
@@ -16,16 +15,28 @@ class Client
         private string $zipCode,
         private string $phoneNumber,
         private ClientType $clientType,
-        private ?string $nip = null,
+        private ?PersonalData $personalData = null,
+        private ?BusinessData $businessData = null,
         private \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
     ) {
-        if ($clientType->isBusiness() && empty($nip)) {
-            throw new \InvalidArgumentException('NIP is required for business clients.');
+        if ($clientType->isPersonal()) {
+            if ($personalData === null) {
+                throw new \InvalidArgumentException('Personal clients require firstname and surname.');
+            }
+            if ($businessData !== null) {
+                throw new \InvalidArgumentException('Personal clients must not have business data.');
+            }
         }
 
-        if ($clientType->isPersonal() && null !== $nip) {
-            throw new \InvalidArgumentException('Personal clients cannot have a NIP.');
+        if ($clientType->isBusiness()) {
+            if ($businessData === null) {
+                throw new \InvalidArgumentException('Business clients require company name and NIP.');
+            }
+            if ($personalData !== null) {
+                throw new \InvalidArgumentException('Business clients must not have personal data.');
+            }
         }
+
     }
 
     public function getId(): int
@@ -42,7 +53,6 @@ class Client
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
             'country' => $this->country,
@@ -51,7 +61,8 @@ class Client
             'zipCode' => $this->zipCode,
             'phoneNumber' => $this->phoneNumber,
             'clientType' => $this->clientType->getValue(),
-            'nip' => $this->nip,
+            'businessData' => $this->businessData?->getCompanyName(), //nullsafe operator if businessData is null
+            'personalData' => $this->personalData?->getFullname(),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];
     }

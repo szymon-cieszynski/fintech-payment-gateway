@@ -9,7 +9,6 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" type="string" length="255"/>
         <field name="email" type="string" length="255" unique="true"/>
         <field name="password" type="string" length="255"/>
         <field name="country" type="string" length="255"/>
@@ -18,7 +17,10 @@
         <field name="zipCode" type="string" length="20"/>
         <field name="phoneNumber" type="string" length="20"/>
         <field name="clientType" type="client_type" />
-        <field name="nip" type="string" length="20" nullable="true"/>
+
+        <embedded name="businessData" class="App\Client\Domain\BusinessData" />
+        <embedded name="personalData" class="App\Client\Domain\PersonalData" />
+
         <field name="createdAt" type="datetime_immutable" column="created_at" />
     </entity>
 
