@@ -9,12 +9,24 @@ use App\Client\Application\CreateClient\CreateClientHandler;
 use App\Client\Domain\BusinessData;
 use App\Client\Domain\ClientType;
 use App\Client\Domain\PersonalData;
+use http\Client\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ClientController extends AbstractController
 {
+    #[Route('/', name: 'home')]
+    public function index(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('home/home.html.twig');
+    }
+
+    #[Route('/login', name: 'login')]
+    public function login(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('home/home.html.twig');
+    }
     #[Route('/new-client', name: 'register', methods: ['GET'])]
     public function __invoke(CreateClientHandler $handler): JsonResponse
     {
@@ -35,4 +47,5 @@ class ClientController extends AbstractController
 
         return new JsonResponse($client->toArray());
     }
+
 }
