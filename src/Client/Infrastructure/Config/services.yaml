@@ -1,0 +1,8 @@
+services:
+    App\Client\:
+        resource: '../../../'
+        exclude:
+            - '../../../Infrastructure/Doctrine/Client.orm.yml'
+
+    App\Client\Domain\ClientRepository:
+        alias: App\Client\Infrastructure\Doctrine\DoctrineClientRepository

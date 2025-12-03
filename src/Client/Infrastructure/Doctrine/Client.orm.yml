@@ -1,0 +1,34 @@
+App\Client\Domain\Client:
+    type: entity
+    table: client
+    id:
+        id:
+            type: uuid
+            column: id
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            length: 255
+        email:
+            type: string
+            length: 255
+            unique: true
+        password:
+            type: string
+            length: 255
+        country:
+            type: string
+        city:
+            type: string
+        address:
+            type: string
+        zipCode:
+            type: string
+        phone:
+            type: string
+        clientType:
+            type: string
+        nip:
+            type: string
+            nullable: true
