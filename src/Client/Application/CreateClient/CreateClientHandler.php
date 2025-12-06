@@ -4,15 +4,16 @@ namespace App\Client\Application\CreateClient;
 
 use App\Client\Domain\Client;
 use App\Client\Domain\ClientRepository;
-use App\Client\Domain\ClientType;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class CreateClientHandler
+final class CreateClientHandler
 {
     public function __construct(
         private ClientRepository $clientRepository,
     ) {
     }
 
+    #[AsMessageHandler]
     public function __invoke(CreateClientCommand $command): Client
     {
         $client = new Client(

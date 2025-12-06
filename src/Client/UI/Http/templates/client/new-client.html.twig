@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New client form{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block form_row %}
+
+    {{- form_errors(form) -}}
+    {{- form_widget(form, widget_attr) -}}
+    {{- form_help(form) -}}
+{% endblock form_row %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Tell me, what kind of client are you?</h2>
+                <div class="btn-group mb-3">
+                    <button class="btn btn-outline-primary" id="showPersonal">Personal client</button>
+                    <button class="btn btn-outline-secondary" id="showBusiness">Business client</button>
+                </div>
+
+                <div id="personalForm" style="display: none;">
+                    {{ form_start(registrationFormPersonal, {
+                        'attr': {'class': 'form-signin',
+                            'novalidate': 'novalidate'}
+                    }) }}
+                    <h1 class="h3 mb-3 font-weight-normal">Create a free account.</h1>
+                    <button type="submit" class="btn btn-dark btn-primary btn-block ">Register</button>
+                    {{ form_end(registrationFormPersonal) }}
+                </div>
+
+                <div id="businessForm" style="display: none;">
+                    {{ form_start(registrationFormBusiness, {
+                        'attr': {'class': 'form-signin',
+                            'novalidate': 'novalidate'}
+                    }) }}
+                    <h1 class="h3 mb-3 font-weight-normal">Create a free account.</h1>
+                    <button type="submit" class="btn btn-dark btn-primary btn-block ">Register</button>
+                    {{ form_end(registrationFormBusiness) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('showPersonal').addEventListener('click', () => {
+            document.getElementById('personalForm').style.display = 'block';
+            document.getElementById('businessForm').style.display = 'none';
+        });
+        document.getElementById('showBusiness').addEventListener('click', () => {
+            document.getElementById('businessForm').style.display = 'block';
+            document.getElementById('personalForm').style.display = 'none';
+        });
+    </script>
+
+{% endblock %}

@@ -1,5 +1,9 @@
 twig:
     file_name_pattern: '*.twig'
+    paths:
+        '%kernel.project_dir%/src/Client/UI/Http/templates': Client
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'
 
 when@test:
     twig:
