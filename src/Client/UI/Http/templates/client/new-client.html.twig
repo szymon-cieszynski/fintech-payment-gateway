@@ -3,6 +3,7 @@
 {% block title %}New client form{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
 {% endblock %}
 
 {% block form_row %}
@@ -15,7 +16,7 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
                 <h2>Tell me, what kind of client are you?</h2>
                 <div class="btn-group mb-3">
                     <button class="btn btn-outline-primary" id="showPersonal">Personal client</button>
@@ -25,21 +26,21 @@
                 <div id="personalForm" style="display: none;">
                     {{ form_start(registrationFormPersonal, {
                         'attr': {'class': 'form-signin',
-                            'novalidate': 'novalidate'}
+                            'novalidate': 'novalidate', 'id': 'personalFormElement'}
                     }) }}
                     <h1 class="h3 mb-3 font-weight-normal">Create a free account.</h1>
-                    <button type="submit" class="btn btn-dark btn-primary btn-block ">Register</button>
                     {{ form_end(registrationFormPersonal) }}
+                    <button type="submit" form="personalFormElement" id="personalFormButton" class="btn btn-dark btn-primary btn-block ">Register</button>
                 </div>
 
                 <div id="businessForm" style="display: none;">
                     {{ form_start(registrationFormBusiness, {
                         'attr': {'class': 'form-signin',
-                            'novalidate': 'novalidate'}
+                            'novalidate': 'novalidate', 'id': 'businessFormElement'}
                     }) }}
                     <h1 class="h3 mb-3 font-weight-normal">Create a free account.</h1>
-                    <button type="submit" class="btn btn-dark btn-primary btn-block ">Register</button>
                     {{ form_end(registrationFormBusiness) }}
+                    <button type="submit" form="businessFormElement" id="businessFormButton" class="btn btn-dark btn-primary btn-block ">Register</button>
                 </div>
             </div>
         </div>
@@ -54,6 +55,30 @@
             document.getElementById('businessForm').style.display = 'block';
             document.getElementById('personalForm').style.display = 'none';
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const personalForm = document.getElementById('personalForm');
+            if (personalForm) {
+                const errors = personalForm.querySelectorAll('[id*="error"]');
+
+                if (errors.length > 0) {
+                    personalForm.style.display = 'block';
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const businessForm = document.getElementById('businessForm');
+            if (businessForm) {
+                const errors = businessForm.querySelectorAll('[id*="error"]');
+
+                if (errors.length > 0) {
+                    businessForm.style.display = 'block';
+                }
+            }
+        });
+
+
     </script>
 
 {% endblock %}

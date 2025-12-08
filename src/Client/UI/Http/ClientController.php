@@ -9,11 +9,11 @@ use App\Client\Application\CreateClient\CreateClientHandler;
 use App\Client\Domain\BusinessData;
 use App\Client\Domain\ClientType;
 use App\Client\Domain\PersonalData;
+use App\Client\Infrastructure\Doctrine\DoctrineClientRepository;
 use App\Client\UI\Http\Form\BusinessForm;
 use App\Client\UI\Http\Form\PersonalForm;
-use http\Client\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,7 +32,7 @@ class ClientController extends AbstractController
         return $this->render('home/home.html.twig');
     }
     #[Route('/new-client', name: 'register', methods: ['GET', 'POST'])]
-    public function __invoke(CreateClientHandler $handler, Request $request, MessageBusInterface $messageBus): \Symfony\Component\HttpFoundation\Response
+    public function __invoke(CreateClientHandler $handler, Request $request, MessageBusInterface $messageBus, DoctrineClientRepository $clientRepository): \Symfony\Component\HttpFoundation\Response
     {
         $formPersonal = $this->createForm(PersonalForm::class);
         $formBusiness = $this->createForm(BusinessForm::class);
@@ -42,8 +42,6 @@ class ClientController extends AbstractController
 
         if ($formPersonal->isSubmitted() && $formPersonal->isValid())
         {
-//            dd($formPersonal->getData());
-
             $data = $formPersonal->getData();
             $cmd = new CreateClientCommand(
                 email: $data['email'],
@@ -57,9 +55,12 @@ class ClientController extends AbstractController
                 personalData: new PersonalData($data['firstname'], $data['surname']),
                 businessData: null
             );
-
-            $messageBus->dispatch($cmd);
-            return $this->redirectToRoute('home');
+            if ($clientRepository->checkIfEmailExist($cmd->email)) {
+                $formPersonal->get('email')->addError(new FormError('Email is already taken.'));
+            } else {
+                $messageBus->dispatch($cmd);
+                return $this->redirectToRoute('home');
+            }
         }
 
         if ($formBusiness->isSubmitted() && $formBusiness->isValid())
@@ -78,8 +79,20 @@ class ClientController extends AbstractController
                 businessData: new BusinessData($data['companyName'], $data['nip']),
             );
 
-            $messageBus->dispatch($cmd);
-            return $this->redirectToRoute('home');
+            $hasError = false;
+            if ($clientRepository->checkIfNIPExist($data['nip'])) {
+                $formBusiness->get('nip')->addError(new FormError('NIP is already taken.'));
+                $hasError = true;
+            }
+            if ($clientRepository->checkIfEmailExist($cmd->email)) {
+                $formBusiness->get('email')->addError(new FormError('Email is already taken.'));
+                $hasError = true;
+            }
+            if (!$hasError) {
+                $messageBus->dispatch($cmd);
+                return $this->redirectToRoute('home');
+            }
+
         }
 //        $cmd = new CreateClientCommand(
 //            email: 'cieszynski8@gmail.com',

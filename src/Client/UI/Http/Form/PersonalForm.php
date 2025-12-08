@@ -4,29 +4,42 @@ declare(strict_types=1);
 
 namespace App\Client\UI\Http\Form;
 
-use App\Client\Domain\Client;
 use App\Client\Domain\ClientType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use function Sodium\add;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class PersonalForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class)
-            ->add('surname', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('firstname', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
+            ->add('surname', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Email(['message' => 'The email "{{ value }}" is not a valid email.']),
+                ],
+            ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank([
@@ -37,24 +50,45 @@ class PersonalForm extends AbstractType
                         'minMessage' => 'Please enter a password with a minimum length of 5 characters!'
                     ])
             ]])
-            ->add('country', CountryType::class)
-            ->add('city')
-            ->add('address')
-            ->add('zipCode', TextType::class, [
-                'attr' => [
-                    'pattern' => '\d{2}-\d{3}',
-                    'title' => 'Enter a postal code in the format XX-XXX'
-                ]
+            ->add('country', CountryType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
             ])
-            ->add('phoneNumber')
+            ->add('city', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
+            ->add('address', TextType::class,[
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
+            ->add('zipCode', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Regex([
+                        'pattern' => '/^\d{2}-\d{3}$/',
+                        'message' => 'Enter a postal code in the format XX-XXX'
+                    ]),
+                ]])
+            ->add('phoneNumber', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
             ->add('clientType', ChoiceType::class, [
                 'choices' => [
                     'Personal client' => ClientType::personal(),
-                    'Business client' => ClientType::business(),
                 ],
-                'choice_value' => fn (?ClientType $type) => $type?->getValue()]);
-//            ->add('save', SubmitType::class, ['label' => 'Register']);
-
+                'choice_value' => fn (?ClientType $type) => $type?->getValue(),
+                'disabled' => true,
+            ])
+            ->add('clientTypeHidden', HiddenType::class, [
+                'mapped' => false,
+                'data' => ClientType::personal()->getValue(),
+            ]);
 
     }
 

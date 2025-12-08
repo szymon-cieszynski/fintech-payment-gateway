@@ -18,4 +18,26 @@ class DoctrineClientRepository implements ClientRepository
         $this->entityManager->persist($client);
         $this->entityManager->flush();
     }
+
+    public function checkIfEmailExist($email): bool
+    {
+        return $this->entityManager->getRepository(Client::class)
+                ->createQueryBuilder('c')
+                ->select('COUNT(c.email)')
+                ->where('c.email = :email')
+                ->setParameter('email', $email)
+                ->getQuery()
+                ->getSingleScalarResult() > 0;
+    }
+
+    public function checkIfNIPExist(string $nip): bool
+    {
+        return $this->entityManager->getRepository(Client::class)
+                ->createQueryBuilder('c')
+                ->select('COUNT(c.businessData.nip)')
+                ->where('c.businessData.nip = :nip')
+                ->setParameter('nip', $nip)
+                ->getQuery()
+                ->getSingleScalarResult() > 0;
+    }
 }
