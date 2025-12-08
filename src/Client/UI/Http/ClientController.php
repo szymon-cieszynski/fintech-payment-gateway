@@ -43,9 +43,10 @@ class ClientController extends AbstractController
         if ($formPersonal->isSubmitted() && $formPersonal->isValid())
         {
             $data = $formPersonal->getData();
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             $cmd = new CreateClientCommand(
                 email: $data['email'],
-                password: $data['password'],
+                password: $hashedPassword,
                 country: $data['country'],
                 city: $data['city'],
                 address: $data['address'],
@@ -59,6 +60,7 @@ class ClientController extends AbstractController
                 $formPersonal->get('email')->addError(new FormError('Email is already taken.'));
             } else {
                 $messageBus->dispatch($cmd);
+                $this->addFlash('success', 'Client was successfully created.');
                 return $this->redirectToRoute('home');
             }
         }
@@ -66,9 +68,10 @@ class ClientController extends AbstractController
         if ($formBusiness->isSubmitted() && $formBusiness->isValid())
         {
             $data = $formBusiness->getData();
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             $cmd = new CreateClientCommand(
                 email: $data['email'],
-                password: $data['password'],
+                password: $hashedPassword,
                 country: $data['country'],
                 city: $data['city'],
                 address: $data['address'],
@@ -90,6 +93,7 @@ class ClientController extends AbstractController
             }
             if (!$hasError) {
                 $messageBus->dispatch($cmd);
+                $this->addFlash('success', 'Client was successfully created.');
                 return $this->redirectToRoute('home');
             }
 
