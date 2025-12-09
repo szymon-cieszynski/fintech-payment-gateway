@@ -1,9 +1,32 @@
 # Fintech Payment Gateway (Bank Simulator)
 
-This project is built with Symfony 7 and serves as a learning platform for developing a backend-focused web application.
+This project is built with **Symfony 7** and serves as a learning platform for developing a backend‑focused web application.  
+The frontend is minimal — the main focus is on **domain logic and architecture**.
 
-The frontend is minimal, the main focus is on logic.
+## 🧩 Architectural Style
 
+The application is designed according to **Hexagonal Architecture (Ports & Adapters)** principles:
+
+- **Domain Layer (Core)**
+    - Entities (`Client`, `Transaction`, etc.)
+    - Value Objects (`PersonalData`, `BusinessData`, `ClientType`)
+    - Domain Services and invariants
+
+- **Application Layer**
+    - Commands (`CreateClientCommand`, `ProcessPaymentCommand`)
+    - Handlers (`CreateClientHandler`, etc.)
+    - Orchestration of domain logic
+
+- **Ports (Interfaces)**
+    - `ClientRepository` (domain contract for persistence)
+    - `PaymentGatewayPort` (contract for external payment systems)
+
+- **Adapters (Implementations)**
+    - `DoctrineClientRepository` (PostgreSQL persistence)
+    - `HttpPaymentGatewayAdapter` (simulated external bank API)
+    - CLI / Controller adapters for user interaction
+
+This separation ensures that the **domain logic is independent of frameworks and infrastructure**.
 ---
 
 ## 🛠️ Technologies
