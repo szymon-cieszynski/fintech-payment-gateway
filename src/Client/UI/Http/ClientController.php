@@ -31,6 +31,7 @@ class ClientController extends AbstractController
     {
         return $this->render('home/home.html.twig');
     }
+
     #[Route('/new-client', name: 'register', methods: ['GET', 'POST'])]
     public function __invoke(CreateClientHandler $handler, Request $request, MessageBusInterface $messageBus, DoctrineClientRepository $clientRepository): \Symfony\Component\HttpFoundation\Response
     {
@@ -40,8 +41,7 @@ class ClientController extends AbstractController
         $formPersonal->handleRequest($request);
         $formBusiness->handleRequest($request);
 
-        if ($formPersonal->isSubmitted() && $formPersonal->isValid())
-        {
+        if ($formPersonal->isSubmitted() && $formPersonal->isValid()) {
             $data = $formPersonal->getData();
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             $cmd = new CreateClientCommand(
@@ -61,12 +61,12 @@ class ClientController extends AbstractController
             } else {
                 $messageBus->dispatch($cmd);
                 $this->addFlash('success', 'Client was successfully created.');
+
                 return $this->redirectToRoute('home');
             }
         }
 
-        if ($formBusiness->isSubmitted() && $formBusiness->isValid())
-        {
+        if ($formBusiness->isSubmitted() && $formBusiness->isValid()) {
             $data = $formBusiness->getData();
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             $cmd = new CreateClientCommand(
@@ -94,29 +94,28 @@ class ClientController extends AbstractController
             if (!$hasError) {
                 $messageBus->dispatch($cmd);
                 $this->addFlash('success', 'Client was successfully created.');
+
                 return $this->redirectToRoute('home');
             }
-
         }
-//        $cmd = new CreateClientCommand(
-//            email: 'cieszynski8@gmail.com',
-//            password: 'secret123',
-//            country: 'Poland',
-//            city: 'Warsaw',
-//            address: 'Test Street 123',
-//            zipCode: '00-001',
-//            phoneNumber: '+48123456789',
-//            clientType: ClientType::personal(),
-//            personalData: $personalData = new PersonalData('Jan', 'Kowalski'),
-////            businessData: $businessData = new BusinessData('MyCompanySuper', '666'),
-//        );
+        //        $cmd = new CreateClientCommand(
+        //            email: 'cieszynski8@gmail.com',
+        //            password: 'secret123',
+        //            country: 'Poland',
+        //            city: 'Warsaw',
+        //            address: 'Test Street 123',
+        //            zipCode: '00-001',
+        //            phoneNumber: '+48123456789',
+        //            clientType: ClientType::personal(),
+        //            personalData: $personalData = new PersonalData('Jan', 'Kowalski'),
+        // //            businessData: $businessData = new BusinessData('MyCompanySuper', '666'),
+        //        );
 
-//        return new JsonResponse($client->toArray());
+        //        return new JsonResponse($client->toArray());
 
         return $this->render('@Client/client/new-client.html.twig', [
             'registrationFormPersonal' => $formPersonal->createView(),
             'registrationFormBusiness' => $formBusiness->createView(),
         ]);
     }
-
 }

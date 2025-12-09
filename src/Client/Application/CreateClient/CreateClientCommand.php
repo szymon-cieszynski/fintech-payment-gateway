@@ -17,8 +17,8 @@ class CreateClientCommand
         public readonly string $zipCode,
         public readonly string $phoneNumber,
         public readonly ClientType $clientType,
-        public readonly ?string $nip = null,
         public readonly ?PersonalData $personalData = null,
         public readonly ?BusinessData $businessData = null,
-    ) {}
+    ) {
+    }
 }

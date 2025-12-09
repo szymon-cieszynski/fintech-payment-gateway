@@ -20,23 +20,22 @@ class Client
         private \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
     ) {
         if ($clientType->isPersonal()) {
-            if ($personalData === null) {
+            if (null === $personalData) {
                 throw new \InvalidArgumentException('Personal clients require firstname and surname.');
             }
-            if ($businessData !== null) {
+            if (null !== $businessData) {
                 throw new \InvalidArgumentException('Personal clients must not have business data.');
             }
         }
 
         if ($clientType->isBusiness()) {
-            if ($businessData === null) {
+            if (null === $businessData) {
                 throw new \InvalidArgumentException('Business clients require company name and NIP.');
             }
-            if ($personalData !== null) {
+            if (null !== $personalData) {
                 throw new \InvalidArgumentException('Business clients must not have personal data.');
             }
         }
-
     }
 
     public function getId(): int
@@ -61,7 +60,7 @@ class Client
             'zipCode' => $this->zipCode,
             'phoneNumber' => $this->phoneNumber,
             'clientType' => $this->clientType->getValue(),
-            'businessData' => $this->businessData?->getCompanyName(), //nullsafe operator if businessData is null
+            'businessData' => $this->businessData?->getCompanyName(), // nullsafe operator if businessData is null
             'personalData' => $this->personalData?->getFullname(),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];

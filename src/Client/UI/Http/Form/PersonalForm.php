@@ -43,13 +43,13 @@ class PersonalForm extends AbstractType
             ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Password cannot be blank!'
+                        'message' => 'Password cannot be blank!',
                     ]),
                     new Length([
                         'min' => 5,
-                        'minMessage' => 'Please enter a password with a minimum length of 5 characters!'
-                    ])
-            ]])
+                        'minMessage' => 'Please enter a password with a minimum length of 5 characters!',
+                    ]),
+                ]])
             ->add('country', CountryType::class, [
                 'constraints' => [
                     new NotBlank(),
@@ -60,7 +60,7 @@ class PersonalForm extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('address', TextType::class,[
+            ->add('address', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -70,7 +70,7 @@ class PersonalForm extends AbstractType
                     new NotBlank(),
                     new Regex([
                         'pattern' => '/^\d{2}-\d{3}$/',
-                        'message' => 'Enter a postal code in the format XX-XXX'
+                        'message' => 'Enter a postal code in the format XX-XXX',
                     ]),
                 ]])
             ->add('phoneNumber', TextType::class, [
@@ -89,7 +89,6 @@ class PersonalForm extends AbstractType
                 'mapped' => false,
                 'data' => ClientType::personal()->getValue(),
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -97,6 +96,5 @@ class PersonalForm extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
         ]);
-
     }
 }
