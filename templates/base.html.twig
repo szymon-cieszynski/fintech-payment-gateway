@@ -24,11 +24,17 @@
             </a>
             <div class="col">
                 {% if is_granted('ROLE_USER') %}
-                    <a href="{{ path('app_logout') }}" class="btn btn-dark">
+                    <a href="{{ path('logout') }}" class="btn btn-dark">
                         Log out
                     </a>
-                    <a href="{{ path('view_orders') }}" class="btn btn-dark">
-                        My orders
+                    <a href="{{ path('payments') }}" class="btn btn-dark">
+                        My payments
+                    </a>
+                    <a href="{{ path('trades') }}" class="btn btn-dark">
+                        My payments
+                    </a>
+                    <a href="{{ path('reports') }}" class="btn btn-dark">
+                        My payments
                     </a>
                 {% else %}
                     <a href="{{ path('login') }}" class="btn btn-dark">

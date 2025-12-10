@@ -11,6 +11,7 @@ use App\Client\Domain\ClientType;
 use App\Client\Domain\PersonalData;
 use App\Client\Infrastructure\Doctrine\DoctrineClientRepository;
 use App\Client\UI\Http\Form\BusinessForm;
+use App\Client\UI\Http\Form\LoginForm;
 use App\Client\UI\Http\Form\PersonalForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -26,14 +27,8 @@ class ClientController extends AbstractController
         return $this->render('home/home.html.twig');
     }
 
-    #[Route('/login', name: 'login')]
-    public function login(): \Symfony\Component\HttpFoundation\Response
-    {
-        return $this->render('home/home.html.twig');
-    }
-
     #[Route('/new-client', name: 'register', methods: ['GET', 'POST'])]
-    public function __invoke(CreateClientHandler $handler, Request $request, MessageBusInterface $messageBus, DoctrineClientRepository $clientRepository): \Symfony\Component\HttpFoundation\Response
+    public function register(CreateClientHandler $handler, Request $request, MessageBusInterface $messageBus, DoctrineClientRepository $clientRepository): \Symfony\Component\HttpFoundation\Response
     {
         $formPersonal = $this->createForm(PersonalForm::class);
         $formBusiness = $this->createForm(BusinessForm::class);
@@ -103,5 +98,38 @@ class ClientController extends AbstractController
             'registrationFormPersonal' => $formPersonal->createView(),
             'registrationFormBusiness' => $formBusiness->createView(),
         ]);
+    }
+
+    #[Route('/login', name: 'login', methods: ['GET','POST'])]
+    public function login(): \Symfony\Component\HttpFoundation\Response
+    {
+        $loginForm = $this->createForm(LoginForm::class);
+        return $this->render('@Client/client/login.html.twig',[
+            'loginForm' => $loginForm->createView()
+        ]);
+    }
+
+    #[Route('/payments', name: 'payments')]
+    public function payments(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('home/home.html.twig');
+    }
+
+    #[Route('/trades', name: 'trades')]
+    public function trades(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('home/home.html.twig');
+    }
+
+    #[Route('/reports', name: 'reports')]
+    public function reports(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('home/home.html.twig');
+    }
+
+    #[Route('/logout', name: 'logout')]
+    public function logout(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('home/home.html.twig');
     }
 }
