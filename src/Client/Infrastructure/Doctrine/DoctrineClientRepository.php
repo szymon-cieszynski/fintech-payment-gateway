@@ -40,4 +40,10 @@ class DoctrineClientRepository implements ClientRepository
                 ->getQuery()
                 ->getSingleScalarResult() > 0;
     }
+
+    public function findByEmail(string $email): ?Client
+    {
+        return $this->entityManager->getRepository(Client::class)
+            ->findOneBy(['email' => $email]);
+    }
 }

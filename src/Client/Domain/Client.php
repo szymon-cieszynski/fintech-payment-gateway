@@ -65,4 +65,14 @@ class Client
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];
     }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getHashedPassword(): string
+    {
+        return $this->password;
+    }
 }

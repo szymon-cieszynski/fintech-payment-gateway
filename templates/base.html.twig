@@ -19,29 +19,31 @@
     <body>
     {% block header %}
         <nav class="navbar navbar-light bg-light sticky-top">
-            <a href="{{ path('home') }}" class="navbar-brand">
-                ~Fintech Payment Gateway~
-            </a>
-            <div class="col">
-                {% if is_granted('ROLE_USER') %}
-                    <a href="{{ path('logout') }}" class="btn btn-dark">
-                        Log out
-                    </a>
-                    <a href="{{ path('payments') }}" class="btn btn-dark">
+            <div class="d-flex align-items-center w-100">
+                <a href="{{ path('home') }}" class="navbar-brand">
+                    ~Fintech Payment Gateway~
+                </a>
+                {% if is_granted('ROLE_CLIENT') %}
+                    <a href="{{ path('payments') }}" class="btn btn-dark me-2">
                         My payments
                     </a>
-                    <a href="{{ path('trades') }}" class="btn btn-dark">
-                        My payments
+                    <a href="{{ path('trades') }}" class="btn btn-dark me-2">
+                        My trades
                     </a>
-                    <a href="{{ path('reports') }}" class="btn btn-dark">
-                        My payments
+                    <a href="{{ path('reports') }}" class="btn btn-dark me-2">
+                        Reporting
                     </a>
                 {% else %}
-                    <a href="{{ path('login') }}" class="btn btn-dark">
+                    <a href="{{ path('app_login') }}" class="btn btn-dark me-2">
                         Log in
                     </a>
-                    <a href="{{ path('register') }}" class="btn btn-dark">
+                    <a href="{{ path('register') }}" class="btn btn-dark me-2">
                         Sign up
+                    </a>
+                {% endif %}
+                {% if is_granted('ROLE_CLIENT') %}
+                    <a href="{{ path('logout') }}" class="btn btn-danger ms-auto me-2">
+                        Log out
                     </a>
                 {% endif %}
 

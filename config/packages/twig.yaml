@@ -2,6 +2,8 @@ twig:
     file_name_pattern: '*.twig'
     paths:
         '%kernel.project_dir%/src/Client/UI/Http/templates': Client
+        '%kernel.project_dir%/src/Auth/UI/Http/templates': Auth
+
     form_themes:
         - 'bootstrap_5_layout.html.twig'
 
