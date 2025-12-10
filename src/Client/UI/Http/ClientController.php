@@ -98,20 +98,6 @@ class ClientController extends AbstractController
                 return $this->redirectToRoute('home');
             }
         }
-        //        $cmd = new CreateClientCommand(
-        //            email: 'cieszynski8@gmail.com',
-        //            password: 'secret123',
-        //            country: 'Poland',
-        //            city: 'Warsaw',
-        //            address: 'Test Street 123',
-        //            zipCode: '00-001',
-        //            phoneNumber: '+48123456789',
-        //            clientType: ClientType::personal(),
-        //            personalData: $personalData = new PersonalData('Jan', 'Kowalski'),
-        // //            businessData: $businessData = new BusinessData('MyCompanySuper', '666'),
-        //        );
-
-        //        return new JsonResponse($client->toArray());
 
         return $this->render('@Client/client/new-client.html.twig', [
             'registrationFormPersonal' => $formPersonal->createView(),
