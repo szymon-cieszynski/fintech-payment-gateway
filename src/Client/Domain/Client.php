@@ -7,17 +7,17 @@ class Client
     private ?int $id = null;
 
     public function __construct(
-        private string $email,
-        private string $password,
-        private string $country,
-        private string $city,
-        private string $address,
-        private string $zipCode,
-        private string $phoneNumber,
-        private ClientType $clientType,
-        private ?PersonalData $personalData = null,
-        private ?BusinessData $businessData = null,
-        private \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
+        public readonly string             $email,
+        public readonly string             $password,
+        public readonly string             $country,
+        public readonly string             $city,
+        public readonly string             $address,
+        public readonly string             $zipCode,
+        public readonly string              $phoneNumber,
+        public readonly ClientType         $clientType,
+        public readonly ?PersonalData      $personalData = null,
+        public readonly ?BusinessData      $businessData = null,
+        public readonly \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
     ) {
         if ($clientType->isPersonal()) {
             if (null === $personalData) {
@@ -38,16 +38,6 @@ class Client
         }
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getType(): string
-    {
-        return $this->clientType->getValue();
-    }
-
     public function toArray(): array
     {
         return [
@@ -60,15 +50,13 @@ class Client
             'zipCode' => $this->zipCode,
             'phoneNumber' => $this->phoneNumber,
             'clientType' => $this->clientType->getValue(),
-            'businessData' => $this->businessData?->getCompanyName(), // nullsafe operator if businessData is null
-            'personalData' => $this->personalData?->getFullname(),
+            'businessData' => $this->businessData?->companyName, // nullsafe operator if businessData is null
+            'personalData' => [
+                'firstname' => $this->personalData?->firstname,
+                'surname' =>  $this->personalData?->surname
+            ],
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
     }
 
     public function getHashedPassword(): string

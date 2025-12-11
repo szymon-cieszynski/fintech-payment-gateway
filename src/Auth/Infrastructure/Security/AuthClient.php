@@ -22,7 +22,7 @@ class AuthClient implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->client->getEmail();
+        return $this->client->email;
     }
 
     public function getRoles(): array
