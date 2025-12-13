@@ -7,33 +7,33 @@ class Client
     private ?int $id = null;
 
     public function __construct(
-        public readonly string             $email,
-        public readonly string             $password,
-        public readonly string             $country,
-        public readonly string             $city,
-        public readonly string             $address,
-        public readonly string             $zipCode,
-        public readonly string              $phoneNumber,
-        public readonly ClientType         $clientType,
-        public readonly ?PersonalData      $personalData = null,
-        public readonly ?BusinessData      $businessData = null,
+        public readonly string $email,
+        public readonly string $password,
+        public readonly string $country,
+        public readonly string $city,
+        public readonly string $address,
+        public readonly string $zipCode,
+        public readonly string $phoneNumber,
+        public readonly ClientType $clientType,
+        public readonly ?PersonalData $personalData = null,
+        public readonly ?BusinessData $businessData = null,
         public readonly \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
     ) {
         if ($clientType->isPersonal()) {
             if (null === $personalData) {
-                throw new \InvalidArgumentException('Personal clients require firstname and surname.');
+                throw new \DomainException('Personal clients require firstname and surname.');
             }
             if (null !== $businessData) {
-                throw new \InvalidArgumentException('Personal clients must not have business data.');
+                throw new \DomainException('Personal clients must not have business data.');
             }
         }
 
         if ($clientType->isBusiness()) {
             if (null === $businessData) {
-                throw new \InvalidArgumentException('Business clients require company name and NIP.');
+                throw new \DomainException('Business clients require company name and NIP.');
             }
             if (null !== $personalData) {
-                throw new \InvalidArgumentException('Business clients must not have personal data.');
+                throw new \DomainException('Business clients must not have personal data.');
             }
         }
     }
@@ -53,7 +53,7 @@ class Client
             'businessData' => $this->businessData?->companyName, // nullsafe operator if businessData is null
             'personalData' => [
                 'firstname' => $this->personalData?->firstname,
-                'surname' =>  $this->personalData?->surname
+                'surname' => $this->personalData?->surname,
             ],
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];
@@ -62,5 +62,10 @@ class Client
     public function getHashedPassword(): string
     {
         return $this->password;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }

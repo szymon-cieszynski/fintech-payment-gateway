@@ -12,7 +12,7 @@ class ClientTest extends TestCase
 {
     public function testThrowsExceptionWhenPersonalDataIsEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new Client(
             'test@example.com',
             'secret',
@@ -28,7 +28,7 @@ class ClientTest extends TestCase
 
     public function testThrowsExceptionWhenBusinessDataIsEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new Client(
             'test@example.com',
             'secret',
@@ -48,7 +48,7 @@ class ClientTest extends TestCase
         $personalData = new PersonalData('John', 'Doe');
         $businessData = new BusinessData('MyCompany', '123456789');
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new Client(
             'test@example.com',
             'secret',

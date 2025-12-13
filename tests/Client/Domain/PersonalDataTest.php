@@ -9,13 +9,13 @@ class PersonalDataTest extends TestCase
 {
     public function testThrowsExceptionWhenFirstnameIsEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new PersonalData('', 'Doe');
     }
 
     public function testThrowsExceptionWhenSurnameIsEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new PersonalData('John', '');
     }
 }

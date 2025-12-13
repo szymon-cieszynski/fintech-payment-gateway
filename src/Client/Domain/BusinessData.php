@@ -9,11 +9,11 @@ class BusinessData
         public readonly string $nip,
     ) {
         if (empty($nip)) {
-            throw new \InvalidArgumentException('NIP is required for business clients.');
+            throw new \DomainException('NIP is required for business clients.');
         }
 
         if (empty($companyName)) {
-            throw new \InvalidArgumentException('Company name is required for business clients.');
+            throw new \DomainException('Company name is required for business clients.');
         }
     }
 }

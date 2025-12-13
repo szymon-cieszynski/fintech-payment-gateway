@@ -126,10 +126,4 @@ class ClientController extends AbstractController
     {
         return $this->render('home/home.html.twig');
     }
-
-    #[Route('/logout', name: 'logout')]
-    public function logout(): Response
-    {
-        return $this->render('home/home.html.twig');
-    }
 }

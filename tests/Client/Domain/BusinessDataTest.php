@@ -9,13 +9,13 @@ class BusinessDataTest extends TestCase
 {
     public function testThrowsExceptionWhenNIPIsEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new BusinessData('MyBeautifulCompany', '');
     }
 
     public function testThrowsExceptionWhenCompanyNameIsEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         new BusinessData('', '123456789');
     }
 }

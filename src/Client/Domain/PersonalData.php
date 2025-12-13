@@ -9,11 +9,11 @@ class PersonalData
         public readonly string $surname,
     ) {
         if (empty($this->firstname)) {
-            throw new \InvalidArgumentException('Firstname is required for personal clients.');
+            throw new \DomainException('Firstname is required for personal clients.');
         }
 
         if (empty($this->surname)) {
-            throw new \InvalidArgumentException('Surname is required for personal clients.');
+            throw new \DomainException('Surname is required for personal clients.');
         }
     }
 }
