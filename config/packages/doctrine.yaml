@@ -26,6 +26,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Client/Infrastructure/Doctrine'
                 prefix: 'App\Client\Domain'
                 alias: Client
+            Account:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Account/Infrastructure/Doctrine'
+                prefix: 'App\Account\Domain'
+                alias: Account
             App:
                 type: attribute
                 is_bundle: false

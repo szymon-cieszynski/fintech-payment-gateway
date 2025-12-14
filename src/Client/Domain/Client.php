@@ -2,10 +2,15 @@
 
 namespace App\Client\Domain;
 
+use App\Account\Domain\Account;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 class Client
 {
     private ?int $id = null;
-
+    private Collection $accounts;
     public function __construct(
         public readonly string $email,
         public readonly string $password,
@@ -17,7 +22,7 @@ class Client
         public readonly ClientType $clientType,
         public readonly ?PersonalData $personalData = null,
         public readonly ?BusinessData $businessData = null,
-        public readonly \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
+        public readonly DateTimeImmutable $createdAt = new DateTimeImmutable(),
     ) {
         if ($clientType->isPersonal()) {
             if (null === $personalData) {
@@ -36,6 +41,8 @@ class Client
                 throw new \DomainException('Business clients must not have personal data.');
             }
         }
+
+        $this->accounts = new ArrayCollection();
     }
 
     public function toArray(): array
@@ -67,5 +74,15 @@ class Client
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getAccounts(): Collection
+    {
+        return $this->accounts;
+    }
+
+    public function addAccount(Account $account): void
+    {
+        $this->accounts->add($account);
     }
 }

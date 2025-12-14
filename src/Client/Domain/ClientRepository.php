@@ -11,4 +11,5 @@ interface ClientRepository
     public function checkIfNIPExist(string $nip): bool;
 
     public function findByEmail(string $email): ?Client;
+    public function findByID(int $id): ?Client;
 }

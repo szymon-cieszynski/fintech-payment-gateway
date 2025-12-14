@@ -46,4 +46,10 @@ class DoctrineClientRepository implements ClientRepository
         return $this->entityManager->getRepository(Client::class)
             ->findOneBy(['email' => $email]);
     }
+
+    public function findByID(int $id): ?Client
+    {
+        return $this->entityManager->getRepository(Client::class)
+            ->findOneBy(['id' => $id]);
+    }
 }

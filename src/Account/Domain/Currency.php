@@ -20,4 +20,9 @@ enum Currency: string
     {
         return $this->value;
     }
+
+    public static function fromString(string $code): self
+    {
+        return self::from($code);
+    }
 }

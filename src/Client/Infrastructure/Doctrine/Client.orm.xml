@@ -22,6 +22,9 @@
         <embedded name="personalData" class="App\Client\Domain\PersonalData" />
 
         <field name="createdAt" type="datetime_immutable" column="created_at" />
+
+        <one-to-many field="accounts" target-entity="App\Account\Domain\Account" mapped-by="client"/>
+
     </entity>
 
 </doctrine-mapping>
