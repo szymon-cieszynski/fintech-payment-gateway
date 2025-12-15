@@ -17,8 +17,18 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
-               Dashboard
-
+                {% if app.user %}
+                <div class="h3 mb-3 font-weight-normal">
+                    Welcome back {{ client }}, {{ app.user.userIdentifier }}!
+                </div>
+                {% endif %}
+                <div class="h2 mb-3 font-weight-normal">
+                    Accounts:
+                    {% for account in accounts %}
+                        <br>  {{ account.currency.value }}
+                        {{ account.balance }}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

@@ -102,28 +102,4 @@ class ClientController extends AbstractController
             'registrationFormBusiness' => $formBusiness->createView(),
         ]);
     }
-
-    #[Route('/dashboard', name: 'dashboard')]
-    public function dashboard(): Response
-    {
-        return $this->render('@Client/client/dashboard.html.twig');
-    }
-
-    #[Route('/payments', name: 'payments')]
-    public function payments(): Response
-    {
-        return $this->render('home/home.html.twig');
-    }
-
-    #[Route('/trades', name: 'trades')]
-    public function trades(): Response
-    {
-        return $this->render('home/home.html.twig');
-    }
-
-    #[Route('/reports', name: 'reports')]
-    public function reports(): Response
-    {
-        return $this->render('home/home.html.twig');
-    }
 }

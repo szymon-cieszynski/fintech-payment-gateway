@@ -9,7 +9,7 @@ class Account
 {
     public function __construct(
         public readonly string $id,
-        public readonly Client $clientID,
+        public readonly Client $client,
         public readonly int $balance = 0,
         public readonly DateTimeImmutable $createdAt = new DateTimeImmutable(),
         public readonly string $status = 'ACTIVE',
@@ -21,7 +21,7 @@ class Account
     {
         return new self(
             uniqid(),
-            clientID: $client,
+            client: $client,
             balance: 0,
             createdAt: new DateTimeImmutable(),
             status: 'ACTIVE',

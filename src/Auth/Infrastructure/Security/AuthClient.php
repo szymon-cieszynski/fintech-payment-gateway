@@ -38,4 +38,9 @@ class AuthClient implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
     }
+
+    public function getClientID(): int
+    {
+        return $this->client->getId();
+    }
 }
