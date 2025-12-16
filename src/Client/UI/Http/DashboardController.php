@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Client\UI\Http;
 
 use App\Auth\Infrastructure\Security\AuthClient;
+use App\Client\Application\Query\Dashboard\DashboardQuery;
+use App\Client\Application\Query\Dashboard\DashboardQueryHandler;
+use App\Client\Application\Query\Dashboard\DashboardView;
 use App\Client\Infrastructure\Doctrine\DoctrineClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class DashboardController extends AbstractController
 {
     #[Route('/dashboard', name: 'dashboard')]
-    public function dashboard(DoctrineClientRepository $clientRepository): Response
+    public function dashboard(DashboardQueryHandler $handler): Response
     {
         $user = $this->getUser(); //AuthClient security object
 
@@ -22,20 +25,11 @@ class DashboardController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $client = $user->getClient();
-
-        $clientData = $client->clientType->isBusiness()
-            ? $client->businessData->companyName
-            : $client->personalData->firstname;
-
-
-        $userViaDoctrine = $clientRepository->findByID($user->getClientID());
-        $accounts = $userViaDoctrine->getAccounts();
+        $view = $handler(new DashboardQuery($user->getClientID()));
 
         return $this->render('@Client/client/dashboard.html.twig',
             [
-                'client' => $clientData,
-                'accounts' => $accounts
+                'view' => $view
             ]
         );
     }
