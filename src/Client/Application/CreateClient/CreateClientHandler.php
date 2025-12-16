@@ -2,14 +2,17 @@
 
 namespace App\Client\Application\CreateClient;
 
+use App\Client\Application\Event\ClientCreated;
 use App\Client\Domain\Client;
 use App\Client\Domain\ClientRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class CreateClientHandler
+final readonly class CreateClientHandler
 {
     public function __construct(
         private ClientRepository $clientRepository,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -30,6 +33,8 @@ final class CreateClientHandler
         );
 
         $this->clientRepository->save($client);
+
+        $this->eventDispatcher->dispatch(new ClientCreated($client));
 
         return $client;
     }

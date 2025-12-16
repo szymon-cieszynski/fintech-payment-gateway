@@ -19,6 +19,11 @@ class Account
 
     public static function create(Client $client, Currency $currency, $iban = null): self
     {
+        if ($client->hasAccountInCurrency($currency))
+        {
+            throw new \DomainException("Client already has account in {$currency->value} currency");
+        }
+
         return new self(
             uniqid(),
             client: $client,

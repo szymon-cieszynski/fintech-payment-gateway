@@ -3,6 +3,7 @@
 namespace App\Client\Domain;
 
 use App\Account\Domain\Account;
+use App\Account\Domain\Currency;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -84,5 +85,15 @@ class Client
     public function addAccount(Account $account): void
     {
         $this->accounts->add($account);
+    }
+
+    public function hasAccountInCurrency(Currency $currency): bool
+    {
+        foreach ($this->accounts as $account) {
+            if ($account->currency === $currency) {
+                return true;
+            }
+        }
+        return false;
     }
 }

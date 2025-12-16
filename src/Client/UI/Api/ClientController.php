@@ -36,6 +36,9 @@ class ClientController extends AbstractController
                     clientType: ClientType::from($payload['clientType']),
                     businessData: new BusinessData($payload['companyName'], $payload['nip']),
                 );
+                if ($clientRepository->checkIfNIPExist($payload['nip'])) {
+                    return new JsonResponse(['error' => 'NIP is already taken.'], 422);
+                }
             } else {
                 $cmd = new CreateClientCommand(
                     email: $payload['email'] ?? null,
@@ -51,9 +54,6 @@ class ClientController extends AbstractController
             }
             if ($clientRepository->checkIfEmailExist($cmd->email)) {
                 return new JsonResponse(['error' => 'Email is already taken.'], 422);
-            }
-            if ($clientRepository->checkIfNIPExist($payload['nip'])) {
-                return new JsonResponse(['error' => 'NIP is already taken.'], 422);
             }
             $client = $handler($cmd);
 

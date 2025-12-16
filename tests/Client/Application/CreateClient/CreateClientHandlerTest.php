@@ -9,16 +9,18 @@ use App\Client\Domain\ClientRepository;
 use App\Client\Domain\ClientType;
 use App\Client\Domain\PersonalData;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CreateClientHandlerTest extends TestCase
 {
     public function testHandlerSavesClient(): void
     {
         $repo = $this->createMock(ClientRepository::class);
+        $event = $this->createMock(EventDispatcherInterface::class);
         $repo->expects($this->exactly(2))
              ->method('save');
 
-        $handler = new CreateClientHandler($repo);
+        $handler = new CreateClientHandler($repo, $event);
         $personalData = new PersonalData('John', 'Doe');
         $businessData = new BusinessData('MyCompany', '666');
 

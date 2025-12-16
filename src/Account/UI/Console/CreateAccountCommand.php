@@ -3,6 +3,7 @@
 namespace App\Account\UI\Console;
 
 use App\Account\Domain\Account;
+use App\Account\Domain\AccountRepository;
 use App\Account\Domain\Currency;
 use App\Client\Domain\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,8 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class CreateAccountCommand extends Command
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private ClientRepository $clientRepository
+        private ClientRepository $clientRepository,
+        private AccountRepository $accountRepository
     )
     {
         parent::__construct();
@@ -48,8 +49,7 @@ final class CreateAccountCommand extends Command
         $currency = Currency::fromString($currencyCode);
         $account = Account::create($client, $currency);
 
-        $this->em->persist($account);
-        $this->em->flush();
+        $this->accountRepository->save($account);
 
         $output->writeln("Account {$account->id} created for client {$client->getId()} in {$currency->value}");
 
