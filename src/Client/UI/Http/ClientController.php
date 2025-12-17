@@ -28,7 +28,7 @@ class ClientController extends AbstractController
         return $this->render('home/home.html.twig');
     }
 
-    #[Route('/new-client', name: 'register', methods: ['GET', 'POST'])]
+    #[Route('/new_client', name: 'register', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, MessageBusInterface $messageBus, DoctrineClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $formPersonal = $this->createForm(PersonalForm::class);

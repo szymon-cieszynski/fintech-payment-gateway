@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ClientController extends AbstractController
 {
-    #[Route('/api/new-client', name: 'api_client_create', methods: ['POST'])]
+    #[Route('/api/new_client', name: 'api_client_create', methods: ['POST'])]
     public function __invoke(Request $request, MessageBusInterface $messageBus, CreateClientHandler $handler, DoctrineClientRepository $clientRepository): JsonResponse
     {
         $payload = json_decode($request->getContent(), true);

@@ -29,11 +29,43 @@
                         {{ account.balance }}
                     {% endfor %}
                 </div>
+                <div class="h2 mb-3 font-weight-normal">
+                    <button type="submit" id="add-account-button" class="btn btn-dark btn-primary btn-block ">Add new account</button>
+                    <br>
+                    <br>
+                    <div class="text-center" id="addAccountElement"  style="display: none;">
+                        <form method="POST" action="{{ path('add_account') }}" id="addAccountForm">
+                            <select name="currency">
+                                {% for currency in currencies %}
+                                    {% set hasAccount = false %}
+                                    {% for account in view.accounts %}
+                                        {% if account.currency == currency.value %}
+                                            {% set hasAccount = true %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if not hasAccount %}
+                                        <option value="{{ currency.value }}">{{ currency.value }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+
+                            <button type="submit">Add account</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+            document.getElementById('add-account-button').addEventListener('click', () => {
+                if(document.getElementById('addAccountElement').style.display === 'none'){
+                    document.getElementById('addAccountElement').style.display = 'block'
+                } else {
+                    document.getElementById('addAccountElement').style.display = 'none'
+                }
+        });
     </script>
 
 {% endblock %}
