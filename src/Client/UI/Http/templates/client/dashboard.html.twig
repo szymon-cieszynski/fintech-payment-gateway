@@ -22,19 +22,27 @@
                     Welcome back {{ view.clientName }}, {{ app.user.userIdentifier }}!
                 </div>
                 {% endif %}
-                <div class="h2 mb-3 font-weight-normal">
-                    Accounts:
-                    {% for account in view.accounts %}
-                        <br>  {{ account.currency }}
-                        {{ account.balance }}
-                    {% endfor %}
-                </div>
+                <h3 class="mb-3 font-weight-normal">Your accounts:</h3>
+                {% for account in view.accounts %}
+                    <div class="card mb-3 w-100">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold">{{ account.currency }}</span>
+                            </div>
+                            <div class="text-end">
+                                <span class="h5 mb-0">{{ account.balance }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
                 <div class="h2 mb-3 font-weight-normal">
                     <button type="submit" id="add-account-button" class="btn btn-dark btn-primary btn-block ">Add new account</button>
                     <br>
                     <br>
                     <div class="text-center" id="addAccountElement"  style="display: none;">
                         <form method="POST" action="{{ path('add_account') }}" id="addAccountForm">
+                            <input type="hidden" name="_token" value="{{ csrf_token('add_account') }}">
                             <select name="currency">
                                 {% for currency in currencies %}
                                     {% set hasAccount = false %}

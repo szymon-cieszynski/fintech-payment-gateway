@@ -12,8 +12,12 @@ use App\Client\Application\Query\Dashboard\DashboardQueryHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class DashboardController extends AbstractController
 {
@@ -38,11 +42,19 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/add-account', name: 'add_account', methods: ['POST'])]
-    public function addAccount(Request $request, MessageBusInterface $messageBus): Response
+    public function addAccount(Request $request, MessageBusInterface $messageBus, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $token = new CsrfToken('add_account', $request->request->get('_token'));
+        if (!$csrfTokenManager->isTokenValid($token))
+        {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
 
         $currency = $request->request->get('currency');
+        if (!$currency) {
+            throw new BadRequestHttpException('Currency is required.');
+        }
         $user = $this->getUser();
 
         $cmd = new AddAccountCommand($user->getClientID(), $currency);

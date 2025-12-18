@@ -20,7 +20,7 @@
     {% block header %}
         <nav class="navbar navbar-light bg-light sticky-top">
             <div class="d-flex align-items-center w-100">
-                <a href="{{ path('home') }}" class="navbar-brand">
+                <a href="{{ path('dashboard') }}" class="navbar-brand">
                     ~Fintech Payment Gateway~
                 </a>
                 {% if is_granted('ROLE_CLIENT') %}
