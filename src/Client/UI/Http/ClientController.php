@@ -31,6 +31,9 @@ class ClientController extends AbstractController
     #[Route('/new_client', name: 'register', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, MessageBusInterface $messageBus, DoctrineClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
+        if ($this->isGranted('ROLE_CLIENT')) {
+            return $this->redirectToRoute('dashboard');
+        }
         $formPersonal = $this->createForm(PersonalForm::class);
         $formBusiness = $this->createForm(BusinessForm::class);
 
