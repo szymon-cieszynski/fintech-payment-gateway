@@ -26,10 +26,6 @@ class DashboardController extends AbstractController
     {
         $user = $this->getUser(); //AuthClient security object
 
-        if (!$user instanceof AuthClient) {
-            throw $this->createAccessDeniedException();
-        }
-
         $view = $handler(new DashboardQuery($user->getClientID()));
         $currencies = Currency::cases();
 
@@ -44,7 +40,6 @@ class DashboardController extends AbstractController
     #[Route('/add-account', name: 'add_account', methods: ['POST'])]
     public function addAccount(Request $request, MessageBusInterface $messageBus, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $token = new CsrfToken('add_account', $request->request->get('_token'));
         if (!$csrfTokenManager->isTokenValid($token))
         {
@@ -52,6 +47,7 @@ class DashboardController extends AbstractController
         }
 
         $currency = $request->request->get('currency');
+
         if (!$currency) {
             throw new BadRequestHttpException('Currency is required.');
         }

@@ -43,6 +43,10 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/add-account, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/payments, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/trades, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/reports, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/dashboard, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
