@@ -3,17 +3,16 @@
 namespace App\Account\Application\AddAccount;
 
 use App\Account\Domain\Account;
+use App\Account\Domain\AccountRepository;
 use App\Account\Domain\Currency;
-use App\Account\Infrastructure\Doctrine\DoctrineAccountRepository;
-use App\Client\Infrastructure\Doctrine\DoctrineClientRepository;
-use DateTimeImmutable;
+use App\Client\Domain\ClientRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 final readonly class AddAccountHandler
 {
     public function __construct(
-        private DoctrineAccountRepository $accountRepository,
-        private DoctrineClientRepository $clientRepository
+        private AccountRepository $accountRepository,
+        private ClientRepository $clientRepository
     ) {
     }
 
