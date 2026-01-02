@@ -3,7 +3,7 @@
 COMPOSE=docker-compose -f docker-compose.yml
 
 start:
-	$(COMPOSE) up -d --build
+	$(COMPOSE) up -d
 
 stop:
 	$(COMPOSE) stop
@@ -34,3 +34,11 @@ phpstan:
 
 psalm:
 	docker-compose exec php vendor/bin/psalm $(filter-out $@,$(MAKECMDGOALS))
+
+build:
+	$(COMPOSE) build
+
+rebuild:
+	$(COMPOSE) down
+	$(COMPOSE) build --no-cache
+	$(COMPOSE) up -d
