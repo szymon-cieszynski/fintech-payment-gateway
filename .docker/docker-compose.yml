@@ -52,6 +52,8 @@ services:
         container_name: fintech-redis
         ports:
             - "6379:6379"
+        networks:
+            - appnet
 volumes:
     pgdata:
 
